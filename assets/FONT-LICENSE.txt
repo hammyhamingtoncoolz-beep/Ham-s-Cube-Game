@@ -1,0 +1,10 @@
+Daydream Regular
+Copyright (c) 2020 DoubleGum
+Designer: DoubleGum
+Source: https://www.instagram.com/doublegum_
+
+This font file was supplied with the project by its owner. The font's use and
+redistribution are governed by the font author's license, separately from the
+MIT license for the game source. Please check the author's current terms before
+redistributing the font or using it commercially.
+

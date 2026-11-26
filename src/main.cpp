@@ -249,7 +249,7 @@ void drawSettings() {
     text(std::to_string(settings.volume) + "%", controlX + 282, y + 7, 21, muted());
     y += row;
 
-    text("Resolution", labelX, y + 10, 25);
+    text("Window resolution", labelX, y + 10, 25);
     if (button({controlX, y, 62, 48}, "<")) {
         settings.resolution = (settings.resolution + 2) % 3;
         if (settings.fullscreen) setFullscreen(false), setFullscreen(true);

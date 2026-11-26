@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 3.20)
 project(HamsCubeGame VERSION 0.01 LANGUAGES C CXX)
 
+if(MSVC)
+    set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+endif()
+
 include(FetchContent)
 set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 set(BUILD_GAMES OFF CACHE BOOL "" FORCE)

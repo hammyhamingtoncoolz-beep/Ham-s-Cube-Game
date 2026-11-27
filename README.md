@@ -4,12 +4,12 @@
 
 ## Current progress
 
-**Status: early playable prototype � v0.01a3**
+**Status: early playable prototype - v0.01a3**
 
 ### Done
 
 - C++ desktop game shell with a CMake build, Raylib 6.2, and a visible version label.
-- Warm, mostly 2D home screen with a gently animated title, custom Raylib-drawn Snake banner art, rounded test buttons, and �by hamdev� credit.
+- Warm, mostly 2D home screen with a gently animated title, custom Raylib-drawn Snake banner art, rounded test buttons, and a by hamdev credit.
 - Test 1 is a playable Snake game. Green food adds one segment; yellow food adds three and speeds Snake up for five seconds. The speed bar shows the remaining boost.
 - Best Snake score and settings are stored in a shared per-user data folder, so they survive replacing the game executable with a later version. Existing beside-executable settings migrate on first launch.
 - Settings for sound volume, window resolution, fullscreen, dark mode, target FPS (capped at the monitor refresh rate), FPS counter, and TTF/OTF font loading. The font row fits its filename and chooser; missing UI glyphs use the default font and show a warning.
@@ -44,14 +44,14 @@ Run `build\Release\hams-cube-game.exe`. Keep the `assets` folder beside the exec
 
 ## Controls
 
-- **Test 1 � Snake:** Arrow keys or WASD steer; avoid the walls and your tail. Green food adds one tail segment. Yellow food adds three and gives a five-second speed boost. Press R or Enter after game over to restart.
-- **Test 2 � Cube Lab:** Move the mouse to turn the cube and click to change its colour.
-- **Test 3 � Cube Hop:** Space or click to hop; land on the platform to build your streak.
+- **Test 1 - Snake:** Arrow keys or WASD steer; avoid the walls and your tail. Green food adds one tail segment. Yellow food adds three and gives a five-second speed boost. Press R or Enter after game over to restart.
+- **Test 2 - Cube Lab:** Move the mouse to turn the cube and click to change its colour.
+- **Test 3 - Cube Hop:** Space or click to hop; land on the platform to build your streak.
 - **Escape:** Return to the home screen.
 
 ## Settings
 
-Adjust sound volume, window size, fullscreen, dark mode, frame-rate limit, and the FPS counter. Unlimited and above-refresh presets are capped at the monitor�s refresh rate. On Windows, **Choose font** opens a file picker for `.ttf` and `.otf` fonts. You can also drag either font format onto the game window. The included Daydream OTF is used by default. If a chosen font lacks UI glyphs, those strings fall back to the system font and a notice appears in settings.
+Adjust sound volume, window size, fullscreen, dark mode, frame-rate limit, and the FPS counter. Unlimited and above-refresh presets are capped at the monitor's refresh rate. On Windows, **Choose font** opens a file picker for `.ttf` and `.otf` fonts. You can also drag either font format onto the game window. The included Daydream OTF is used by default. If a chosen font lacks UI glyphs, those strings fall back to the system font and a notice appears in settings.
 
 ## License
 

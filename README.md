@@ -2,6 +2,31 @@
 
 **Ham's Cube Game v0.01a** is a small C++ cube playground with three playable test modes, a settings screen, and a wobbly title. It uses [raylib](https://www.raylib.com/) for graphics, input, and sound.
 
+## Current progress
+
+**Status: early playable prototype — v0.01a**
+
+### Done
+
+- C++ desktop game shell with a CMake build, Raylib 6.2, and a visible version label.
+- Home screen with the animated title and rounded buttons.
+- Three playable test modes: Cube Dash, Cube Lab, and Cube Hop.
+- Settings for sound volume, window resolution, fullscreen, dark mode, target FPS, FPS counter, and TTF/OTF font loading.
+- Windows build workflow that packages the game and uploads a downloadable artifact.
+
+### Not done yet
+
+- The test modes are small prototypes; the project does not yet have a longer game mode with levels or a complete progression loop.
+- High scores and gameplay progress are not saved. Only settings persist.
+- Controller support and key remapping are not implemented.
+
+### Likely next steps
+
+1. Choose the main game mode and expand it with more levels, obstacles, and a polished restart/pause loop.
+2. Save best scores and gameplay progress.
+3. Add controller support and configurable controls.
+4. Publish a versioned Windows release alongside the Actions build artifact.
+
 ## Build on Windows
 
 Install [CMake](https://cmake.org/download/) and Visual Studio 2022 or newer with the **Desktop development with C++** workload. From a terminal in this folder:

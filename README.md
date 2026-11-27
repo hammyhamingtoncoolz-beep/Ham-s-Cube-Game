@@ -1,18 +1,18 @@
 # Ham's Cube Game
 
-**Ham's Cube Game v0.01a** is a small C++ cube playground with three playable test modes, a settings screen, and a wobbly title. It uses [raylib](https://www.raylib.com/) for graphics, input, and sound.
+**Ham's Cube Game v0.01a2** is a small C++ cube playground with three playable test modes, a settings screen, and a wobbly title. It uses [raylib](https://www.raylib.com/) for graphics, input, and sound.
 
 ## Current progress
 
-**Status: early playable prototype — v0.01a**
+**Status: early playable prototype — v0.01a2**
 
 ### Done
 
 - C++ desktop game shell with a CMake build, Raylib 6.2, and a visible version label.
-- Home screen with the animated title and rounded buttons.
-- Three playable test modes: Cube Dash, Cube Lab, and Cube Hop.
-- Settings for sound volume, window resolution, fullscreen, dark mode, target FPS, FPS counter, and TTF/OTF font loading.
-- Windows build workflow that packages the game and uploads a downloadable artifact.
+- Home screen with the animated title, 2D background, rounded test buttons, and a “by hamdev” credit.
+- Three playable tests: Test 1 (Cube Dash), Test 2 (Cube Lab), and Test 3 (Cube Hop).
+- Settings for sound volume, window resolution, fullscreen, dark mode, target FPS (capped at the monitor refresh rate), FPS counter, and TTF/OTF font loading.
+- Windows workflow that builds the game for pushes and pull requests, then uploads a downloadable ZIP artifact.
 
 ### Not done yet
 
@@ -49,7 +49,7 @@ Run `build\Release\hams-cube-game.exe`. The `assets` folder sits beside the exec
 
 ## Settings
 
-Adjust sound volume, window size, fullscreen, dark mode, frame-rate limit, and the FPS counter. On Windows, **Choose font** opens a file picker for `.ttf` and `.otf` fonts. You can also drag either font format onto the game window. The included Daydream OTF is used by default.
+Adjust sound volume, window size, fullscreen, dark mode, frame-rate limit, and the FPS counter. Unlimited and above-refresh presets are capped at the monitor’s refresh rate. On Windows, **Choose font** opens a file picker for `.ttf` and `.otf` fonts. You can also drag either font format onto the game window. The included Daydream OTF is used by default.
 
 ## License
 

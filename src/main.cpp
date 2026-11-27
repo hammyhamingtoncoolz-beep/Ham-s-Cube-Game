@@ -14,7 +14,7 @@
 namespace {
 constexpr int START_WIDTH = 1360;
 constexpr int START_HEIGHT = 820;
-constexpr const char* VERSION = "v0.01a";
+constexpr const char* VERSION = "v0.01a2";
 constexpr std::array<int, 4> FPS_OPTIONS{30, 60, 120, 144};
 constexpr std::array<Vector2, 3> LANES{{{-2.0f, 0.0f}, {0.0f, 0.0f}, {2.0f, 0.0f}}};
 constexpr std::array<Color, 5> CUBE_COLORS{{{74, 220, 255, 255}, {255, 101, 127, 255}, {177, 124, 255, 255}, {255, 199, 84, 255}, {116, 239, 163, 255}}};
@@ -170,7 +170,11 @@ void setFullscreen(bool enabled) {
     settings.fullscreen = enabled;
 }
 
-void applyFps() { SetTargetFPS(settings.fps < static_cast<int>(FPS_OPTIONS.size()) ? FPS_OPTIONS[settings.fps] : 0); }
+void applyFps() {
+    const int requested = settings.fps < static_cast<int>(FPS_OPTIONS.size()) ? FPS_OPTIONS[settings.fps] : 0;
+    const int refresh = GetMonitorRefreshRate(GetCurrentMonitor());
+    SetTargetFPS(refresh > 0 ? (requested == 0 ? refresh : std::min(requested, refresh)) : requested);
+}
 
 void startTest(int test) {
     page = Page::Test;
@@ -193,6 +197,41 @@ void drawBackground(float time) {
     for (int y = 0; y < height; y += 64) DrawLine(0, y, GetScreenWidth(), y, settings.dark ? Color{130, 153, 199, 10} : Color{99, 123, 156, 12});
 }
 
+void drawIsoCube(float cx, float cy, float size, float time) {
+    const float bob = std::sin(time * 2.0f) * 7.0f;
+    const Vector2 top{cx, cy - size + bob};
+    const Vector2 right{cx + size, cy - size * 0.5f + bob};
+    const Vector2 center{cx, cy + bob};
+    const Vector2 left{cx - size, cy - size * 0.5f + bob};
+    const Vector2 lowerLeft{cx - size, cy + size * 0.5f + bob};
+    const Vector2 bottom{cx, cy + size + bob};
+    const Vector2 lowerRight{cx + size, cy + size * 0.5f + bob};
+
+    DrawCircleGradient({cx, cy}, size * 1.6f, Color{74, 220, 255, 38}, Color{74, 220, 255, 0});
+    DrawEllipse(static_cast<int>(cx), static_cast<int>(cy + size + 15), size * 0.9f, 13.0f,
+                settings.dark ? Color{4, 8, 18, 100} : Color{66, 84, 112, 45});
+
+    const Color leftFace{34, 123, 165, 255};
+    const Color rightFace{28, 91, 139, 255};
+    DrawTriangle(left, center, lowerLeft, leftFace);
+    DrawTriangle(center, bottom, lowerLeft, leftFace);
+    DrawTriangle(center, right, lowerRight, rightFace);
+    DrawTriangle(center, lowerRight, bottom, rightFace);
+    DrawTriangle(top, right, center, Color{119, 235, 255, 255});
+    DrawTriangle(top, center, left, Color{88, 215, 246, 255});
+
+    const Color edge{222, 250, 255, 255};
+    DrawLineEx(top, right, 3.0f, edge);
+    DrawLineEx(right, lowerRight, 3.0f, edge);
+    DrawLineEx(lowerRight, bottom, 3.0f, edge);
+    DrawLineEx(bottom, lowerLeft, 3.0f, edge);
+    DrawLineEx(lowerLeft, left, 3.0f, edge);
+    DrawLineEx(left, top, 3.0f, edge);
+    DrawLineEx(left, center, 2.0f, edge);
+    DrawLineEx(center, right, 2.0f, edge);
+    DrawLineEx(center, bottom, 2.0f, edge);
+}
+
 void drawHome(float time) {
     const float width = static_cast<float>(GetScreenWidth());
     centered("ham's", width / 2.0f + std::sin(time * 13.0f) * 3.0f, 78 + std::sin(time * 9.0f) * 2.0f, 76, Color{255, 93, 115, 255});
@@ -201,26 +240,19 @@ void drawHome(float time) {
     DrawRectangleRounded({width / 2.0f - 164, 272, 328, 300}, 0.15f, 16, panel());
     centered("YOUR CUBE IS READY", width / 2.0f, 293, 19, muted());
 
-    Camera3D camera{{4.8f, 4.2f, 7.2f}, {0, 0, 0}, {0, 1, 0}, 38.0f, CAMERA_PERSPECTIVE};
-    BeginMode3D(camera);
-    DrawPlane({0, -1.0f, 0}, {200, 200}, settings.dark ? Color{27, 33, 53, 255} : Color{218, 226, 239, 255});
-    DrawGrid(20, 1.0f);
-    const Vector3 cubePos{std::sin(time * 0.8f) * 0.22f, std::sin(time * 2.0f) * 0.15f, 0};
-    DrawCubeV(cubePos, {1.65f, 1.65f, 1.65f}, CUBE_COLORS[0]);
-    DrawCubeWiresV(cubePos, {1.65f, 1.65f, 1.65f}, Color{255, 255, 255, 255});
-    EndMode3D();
+    drawIsoCube(width / 2.0f, 442.0f, 82.0f, time);
 
     const float left = 76;
     const float right = width - 356;
     centered("PLAY TESTS", left + 140, 354, 20, muted());
     centered("TWEAK IT", right + 140, 354, 20, muted());
-    if (button({left, 395, 280, 62}, "Test 1  /  Cube Dash", true)) startTest(1);
-    if (button({left, 473, 280, 62}, "Test 2  /  Cube Lab")) startTest(2);
-    if (button({left, 551, 280, 62}, "Test 3  /  Cube Hop")) startTest(3);
+    if (button({left, 395, 280, 62}, "Test 1", true)) startTest(1);
+    if (button({left, 473, 280, 62}, "Test 2")) startTest(2);
+    if (button({left, 551, 280, 62}, "Test 3")) startTest(3);
     if (button({right, 395, 280, 62}, "Settings", true)) page = Page::Settings;
-    if (button({right, 473, 280, 62}, "Test 2  /  Cube Lab")) startTest(2);
-    if (button({right, 551, 280, 62}, "Test 3  /  Cube Hop")) startTest(3);
-    centered("HAM'S CUBE GAME", width / 2.0f, static_cast<float>(GetScreenHeight() - 42), 17, muted());
+    if (button({right, 473, 280, 62}, "Test 2")) startTest(2);
+    if (button({right, 551, 280, 62}, "Test 3")) startTest(3);
+    centered("by hamdev", width / 2.0f, static_cast<float>(GetScreenHeight() - 42), 18, muted());
     DrawText(VERSION, 26, GetScreenHeight() - 37, 18, CUBE_COLORS[0]);
 }
 
@@ -380,7 +412,7 @@ void drawTestThree(float dt) {
 
 void drawTest(float dt) {
     if (IsKeyPressed(KEY_ESCAPE)) { page = Page::Home; return; }
-    const std::string title = activeTest == 1 ? "CUBE DASH" : activeTest == 2 ? "CUBE LAB" : "CUBE HOP";
+    const std::string title = activeTest == 1 ? "TEST 1" : activeTest == 2 ? "TEST 2" : "TEST 3";
     if (activeTest == 1) drawTestOne(dt);
     else if (activeTest == 2) drawTestTwo(static_cast<float>(GetTime()));
     else drawTestThree(dt);
@@ -403,12 +435,10 @@ void drawTest(float dt) {
 int main() {
     loadSettings();
     SetConfigFlags(FLAG_WINDOW_RESIZABLE | FLAG_MSAA_4X_HINT | FLAG_VSYNC_HINT);
-    InitWindow(RESOLUTIONS_W[settings.resolution], RESOLUTIONS_H[settings.resolution], "Ham's Cube Game v0.01a");
+    InitWindow(RESOLUTIONS_W[settings.resolution], RESOLUTIONS_H[settings.resolution], "Ham's Cube Game v0.01a2");
     SetExitKey(KEY_NULL);
     if (settings.fullscreen) ToggleFullscreen();
-    SetTargetFPS(60);
-    if (settings.fps < static_cast<int>(FPS_OPTIONS.size())) SetTargetFPS(FPS_OPTIONS[settings.fps]);
-    else SetTargetFPS(0);
+    applyFps();
     if (settings.fontPath.empty()) settings.fontPath = appPath("assets/Daydream DEMO.otf").string();
     gameFont = GetFontDefault();
     loadGameFont(settings.fontPath);

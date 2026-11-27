@@ -302,7 +302,6 @@ void drawHome(float time) {
     const float width = static_cast<float>(GetScreenWidth());
     centered("ham's", width/2 + std::sin(time*13)*2.5f, 46 + std::sin(time*9)*1.5f, 70, Color{209,79,70,255});
     centered("SNAKE GAME!", width/2, 112, 45, ink());
-    centered("by hamdev", width/2, 163, 17, muted());
     const float left = 54, right = width - 304;
     text("PLAY", left + 10, 260, 18, muted()); text("MORE", right + 10, 260, 18, muted());
     if (button({left,296,250,62}, "Test 1 - Snake", true)) startTest(1);
